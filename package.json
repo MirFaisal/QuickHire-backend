@@ -6,7 +6,12 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js"
   },
-  "keywords": ["job-board", "rest-api", "express", "mongodb"],
+  "keywords": [
+    "job-board",
+    "rest-api",
+    "express",
+    "mongodb"
+  ],
   "author": "Mir Faisal Ahmad",
   "license": "ISC",
   "description": "A RESTful API backend for the QuickHire job board application.",
