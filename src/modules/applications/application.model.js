@@ -26,7 +26,7 @@ const applicationSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Application", applicationSchema);
