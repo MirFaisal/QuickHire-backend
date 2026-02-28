@@ -23,6 +23,7 @@ src/
 ├── middleware/
 │   ├── errorHandler.js             # Centralized error handling
 │   └── requireAuth.js              # JWT authentication guard
+├── seed.js                         # Admin account seeder
 └── modules/
     ├── auth/
     │   ├── admin.model.js          # Admin Mongoose schema
@@ -61,7 +62,10 @@ npm install
 cp .env.example .env
 # Then edit .env with your actual values (see below)
 
-# 4. Start the server
+# 4. Seed the admin account
+npm run seed
+
+# 5. Start the server
 npm start
 
 # Or run in development mode (auto-restart on file changes)
@@ -69,6 +73,23 @@ npm run dev
 ```
 
 The server will start at `http://localhost:5000` (or whichever PORT you set).
+
+## Seeding Admin Account
+
+There is no public registration endpoint — admin accounts are created via the seed script:
+
+```bash
+npm run seed
+```
+
+This creates a default admin with the following credentials:
+
+| Field    | Value                 |
+| -------- | --------------------- |
+| Email    | `admin@quickhire.com` |
+| Password | `Admin@123`           |
+
+> If the admin already exists, the script will skip creation and exit safely.
 
 ## Environment Variables
 
