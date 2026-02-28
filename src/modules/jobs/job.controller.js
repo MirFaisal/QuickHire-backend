@@ -1,5 +1,6 @@
+const mongoose = require("mongoose");
 const Job = require("./job.model");
-require("../categories/category.model"); // register Category model for populate
+const Category = require("../categories/category.model");
 
 const getAllJobs = async (req, res, next) => {
   try {
@@ -15,7 +16,18 @@ const getAllJobs = async (req, res, next) => {
     }
 
     if (category) {
-      filter.category = category;
+      // Accept both ObjectId and category name
+      if (mongoose.Types.ObjectId.isValid(category)) {
+        filter.category = category;
+      } else {
+        const cat = await Category.findOne({ name: { $regex: `^${category}$`, $options: "i" } });
+        if (cat) {
+          filter.category = cat._id;
+        } else {
+          // No matching category — return empty results
+          return res.status(200).json({ success: true, count: 0, data: [] });
+        }
+      }
     }
 
     if (location) {
