@@ -1,6 +1,15 @@
 const Application = require("./application.model");
 const Job = require("../jobs/job.model");
 
+const getAllApplications = async (_req, res, next) => {
+  try {
+    const applications = await Application.find().populate("job_id", "title company").sort({ createdAt: -1 });
+    res.status(200).json({ success: true, count: applications.length, data: applications });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const submitApplication = async (req, res, next) => {
   try {
     const { job_id } = req.body;
@@ -19,4 +28,4 @@ const submitApplication = async (req, res, next) => {
   }
 };
 
-module.exports = { submitApplication };
+module.exports = { getAllApplications, submitApplication };

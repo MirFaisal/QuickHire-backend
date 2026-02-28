@@ -1,4 +1,5 @@
 const Job = require("./job.model");
+require("../categories/category.model"); // register Category model for populate
 
 const getAllJobs = async (_req, res, next) => {
   try {
@@ -27,7 +28,8 @@ const getJobById = async (req, res, next) => {
 
 const createJob = async (req, res, next) => {
   try {
-    const job = await Job.create(req.body);
+    const created = await Job.create(req.body);
+    const job = await Job.findById(created._id).populate("category", "name");
     res.status(201).json({ success: true, data: job });
   } catch (error) {
     next(error);
