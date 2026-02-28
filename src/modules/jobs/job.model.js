@@ -30,4 +30,10 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Indexes for fast search & filter queries
+jobSchema.index({ title: "text", company: "text", description: "text" });
+jobSchema.index({ category: 1, createdAt: -1 });
+jobSchema.index({ location: 1 });
+jobSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model("Job", jobSchema);
