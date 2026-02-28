@@ -12,9 +12,7 @@ const validate = (schema) => (req, _res, next) => {
   const result = schema.safeParse(req.body);
 
   if (!result.success) {
-    const error = new Error(
-      result.error.errors.map((e) => e.message).join(", ")
-    );
+    const error = new Error(result.error.errors.map((e) => e.message).join(", "));
     error.statusCode = 400;
     return next(error);
   }
