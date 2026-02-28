@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const softDeletePlugin = require("../../middleware/softDelete");
 
 const jobSchema = new mongoose.Schema(
   {
@@ -29,6 +30,9 @@ const jobSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// Soft delete
+jobSchema.plugin(softDeletePlugin);
 
 // Indexes for fast search & filter queries
 jobSchema.index({ title: "text", company: "text", description: "text" });

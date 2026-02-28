@@ -20,7 +20,7 @@ const getAllCategories = async (_req, res, next) => {
 
 const deleteCategory = async (req, res, next) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
+    const category = await Category.softDeleteById(req.params.id);
 
     if (!category) {
       const error = new Error("Category not found");
@@ -34,4 +34,20 @@ const deleteCategory = async (req, res, next) => {
   }
 };
 
-module.exports = { createCategory, getAllCategories, deleteCategory };
+const restoreCategory = async (req, res, next) => {
+  try {
+    const category = await Category.restore(req.params.id);
+
+    if (!category) {
+      const error = new Error("Category not found or not deleted");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ success: true, data: category });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createCategory, getAllCategories, deleteCategory, restoreCategory };

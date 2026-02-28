@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const softDeletePlugin = require("../../middleware/softDelete");
 
 const applicationSchema = new mongoose.Schema(
   {
@@ -28,5 +29,8 @@ const applicationSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// Soft delete
+applicationSchema.plugin(softDeletePlugin);
 
 module.exports = mongoose.model("Application", applicationSchema);

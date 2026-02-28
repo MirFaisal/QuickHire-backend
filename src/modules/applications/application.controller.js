@@ -28,4 +28,36 @@ const submitApplication = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllApplications, submitApplication };
+const deleteApplication = async (req, res, next) => {
+  try {
+    const application = await Application.softDeleteById(req.params.id);
+
+    if (!application) {
+      const error = new Error("Application not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ success: true, message: "Application deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const restoreApplication = async (req, res, next) => {
+  try {
+    const application = await Application.restore(req.params.id);
+
+    if (!application) {
+      const error = new Error("Application not found or not deleted");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ success: true, data: application });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllApplications, submitApplication, deleteApplication, restoreApplication };

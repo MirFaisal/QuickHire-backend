@@ -69,7 +69,7 @@ const createJob = async (req, res, next) => {
 
 const deleteJob = async (req, res, next) => {
   try {
-    const job = await Job.findByIdAndDelete(req.params.id);
+    const job = await Job.softDeleteById(req.params.id);
 
     if (!job) {
       const error = new Error("Job not found");
@@ -83,4 +83,21 @@ const deleteJob = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllJobs, getJobById, createJob, deleteJob };
+const restoreJob = async (req, res, next) => {
+  try {
+    const job = await Job.restore(req.params.id);
+
+    if (!job) {
+      const error = new Error("Job not found or not deleted");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const restored = await Job.findById(job._id).populate("category", "name");
+    res.status(200).json({ success: true, data: restored });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllJobs, getJobById, createJob, deleteJob, restoreJob };
