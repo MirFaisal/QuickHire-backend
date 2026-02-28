@@ -1,9 +1,28 @@
 const Job = require("./job.model");
 require("../categories/category.model"); // register Category model for populate
 
-const getAllJobs = async (_req, res, next) => {
+const getAllJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find().populate("category", "name").sort({ createdAt: -1 });
+    const { search, category, location } = req.query;
+    const filter = {};
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (location) {
+      filter.location = { $regex: location, $options: "i" };
+    }
+
+    const jobs = await Job.find(filter).populate("category", "name").sort({ createdAt: -1 });
     res.status(200).json({ success: true, count: jobs.length, data: jobs });
   } catch (error) {
     next(error);
