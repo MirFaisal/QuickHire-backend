@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const authRoutes = require("./modules/auth/auth.routes");
 const jobRoutes = require("./modules/jobs/job.routes");
+const categoryRoutes = require("./modules/categories/category.routes");
 const applicationRoutes = require("./modules/applications/application.routes");
 const errorHandler = require("./middleware/errorHandler");
 
@@ -20,6 +21,7 @@ app.get("/", (_req, res) => {
 // ─── Routes ──────────────────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/applications", applicationRoutes);
 
 // ─── Centralized Error Handler (must be registered last) ─────────────

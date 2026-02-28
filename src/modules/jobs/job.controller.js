@@ -2,7 +2,7 @@ const Job = require("./job.model");
 
 const getAllJobs = async (_req, res, next) => {
   try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
+    const jobs = await Job.find().populate("category", "name").sort({ createdAt: -1 });
     res.status(200).json({ success: true, count: jobs.length, data: jobs });
   } catch (error) {
     next(error);
@@ -11,7 +11,7 @@ const getAllJobs = async (_req, res, next) => {
 
 const getJobById = async (req, res, next) => {
   try {
-    const job = await Job.findById(req.params.id);
+    const job = await Job.findById(req.params.id).populate("category", "name");
 
     if (!job) {
       const error = new Error("Job not found");

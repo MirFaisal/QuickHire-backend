@@ -24,7 +24,6 @@ const applicationSchema = new mongoose.Schema(
     },
     cover_note: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
