@@ -49,5 +49,12 @@ const restoreCategory = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports = { createCategory, getAllCategories, deleteCategory, restoreCategory };
+const getDeletedCategories = async (_req, res, next) => {
+  try {
+    const categories = await Category.findDeleted().sort({ deletedAt: -1 });
+    res.status(200).json({ success: true, count: categories.length, data: categories });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { createCategory, getAllCategories, getDeletedCategories, deleteCategory, restoreCategory };

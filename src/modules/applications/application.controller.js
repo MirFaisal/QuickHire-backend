@@ -59,5 +59,20 @@ const restoreApplication = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports = { getAllApplications, submitApplication, deleteApplication, restoreApplication };
+const getDeletedApplications = async (_req, res, next) => {
+  try {
+    const applications = await Application.findDeleted()
+      .populate("job_id", "title company")
+      .sort({ deletedAt: -1 });
+    res.status(200).json({ success: true, count: applications.length, data: applications });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = {
+  getAllApplications,
+  getDeletedApplications,
+  submitApplication,
+  deleteApplication,
+  restoreApplication,
+};

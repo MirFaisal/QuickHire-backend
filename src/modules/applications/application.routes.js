@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {
   getAllApplications,
+  getDeletedApplications,
   submitApplication,
   deleteApplication,
   restoreApplication,
@@ -11,6 +12,7 @@ const requireAuth = require("../../middleware/requireAuth");
 
 const router = Router();
 
+router.get("/deleted", requireAuth, getDeletedApplications);
 router.get("/", requireAuth, getAllApplications);
 router.post("/", validate(applicationSchema), submitApplication);
 router.delete("/:id", requireAuth, deleteApplication);

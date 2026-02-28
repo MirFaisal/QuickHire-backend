@@ -100,4 +100,13 @@ const restoreJob = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllJobs, getJobById, createJob, deleteJob, restoreJob };
+const getDeletedJobs = async (_req, res, next) => {
+  try {
+    const jobs = await Job.findDeleted().populate("category", "name").sort({ deletedAt: -1 });
+    res.status(200).json({ success: true, count: jobs.length, data: jobs });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllJobs, getJobById, getDeletedJobs, createJob, deleteJob, restoreJob };
